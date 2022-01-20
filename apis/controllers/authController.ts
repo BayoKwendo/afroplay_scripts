@@ -1,7 +1,7 @@
 import userService from '../services/userService.ts';
 import axiod from 'https://deno.land/x/axiod@0.22/mod.ts';
 
-import { SMS, CONFIG } from '../db/config.ts';
+import { SMS_BaseUrl, CONFIG } from '../db/config.ts';
 
 import { getQuery } from 'https://deno.land/x/oak/helpers.ts';
 import * as log from 'https://deno.land/std/log/mod.ts';
@@ -59,7 +59,7 @@ export default {
 						"msisdn": values.msisdn
 					}
 					// send sms to sms service
-					await axiod.post(`${SMS}`, formData, CONFIG)
+					await axiod.post(`${SMS_BaseUrl}`, formData, CONFIG)
 
 					ctx.response.status = true;
 					ctx.response.status_code = 200;

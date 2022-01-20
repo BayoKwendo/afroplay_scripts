@@ -10,7 +10,7 @@ const app = new Application({
   serverConstructor: HttpServerNative
 });
 
-const port = 1200;
+const port = 1204;
 app.use(
   oakCors({
     origin: "*",

@@ -54,30 +54,7 @@ export const formatter = new Intl.NumberFormat('en-US', {
 	minimumFractionDigits: 2
 });
 
-export const SMS_BaseUrl: string = "http://localhost:1200/send_sms"; // base url for sms services
-
-export const SMS_BaseUrl_Officer: string = "http://localhost:1200/send_sms_field_officer"; // base url for sms services
-
-
-export const SMS_BaseUrl_Admin: string = "http://localhost:1200/send_sms_admin_officer"; // base url for sms services
-
-export const SMS_BaseUrl_Admin_Final: string = "http://localhost:1200/send_sms_final_officer"; // base url for sms services
-
-
-export const SMS_BaseUrl_All: string = "http://localhost:1200/sms_all_staff"; // base url for sms services
-
-
-// export const SMS_BaseUrl: string = "http://sms_service:1200/send_sms"; // base url for sms services
-
-export const SMS = {
-	URL: 'https://api.onfonmedia.co.ke/v1/sms/SendBulkSMS',
-	APIKEY: 'LkE9VDl8Ww8Jzt0qAnSF3ltwnMxUci6lAlHw6vcUm8A=',
-	SENDERID: '22141',
-	CLIENTID: 'efb70be7-8994-4aee-a900-8eb076233487',
-	ACCESSKEY: 'FtmeVaEIeREw3QiFhgDzDO9i1DDrwPHv',
-	MOBIPESA: "254721792200"
-
-};
+export const SMS_BaseUrl: string = "http://localhost:1204/send_sms"; // base url for sms services
 
 // mpesa declaration
 export const MPESA = {

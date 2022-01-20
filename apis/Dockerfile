@@ -1,6 +1,6 @@
-FROM denoland/deno:1.17.2
+FROM denoland/deno:1.18.0
 
-EXPOSE 2027
+EXPOSE 2028
 
 WORKDIR /app
 
