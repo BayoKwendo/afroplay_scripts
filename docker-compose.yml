@@ -1,0 +1,46 @@
+
+
+services:
+  sms_service:
+    restart: always
+    network_mode: host
+    build:
+      context: ./sms
+      dockerfile: Dockerfile
+    container_name: sms_service
+   
+  # reminder_service:
+  #   restart: always
+  #   network_mode: host
+  #   build:
+  #     context: ./Reminders
+  #     dockerfile: Dockerfile
+  #   container_name: send_reminder_service
+  
+  # ngombe_loan_scripts:
+  #   restart: always
+  #   network_mode: host
+  #   build:
+  #     context: ./main_app
+  #     dockerfile: Dockerfile
+  #   container_name: ngombe_loan_scripts
+    
+  # daily_update_scripts:
+  #   restart: always
+  #   build:
+  #     context: ./daily_services
+  #     dockerfile: Dockerfile
+  #   container_name: daily_update_scripts
+  #   network_mode: host
+    
+  afroplay_api:
+    restart: always
+    network_mode: host
+    build:
+      context: ./apis
+      dockerfile: Dockerfile
+    container_name: afroplay_api
+  
+  
+
+ 
