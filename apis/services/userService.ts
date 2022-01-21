@@ -16,7 +16,7 @@ export default {
         const result = await client.query(`INSERT INTO
         ${TABLE.SESSION}
       SET
-        msisdn = ?
+        msisdn = ?,
         session_id = ?`, [
             msisdn,
             session_id
@@ -28,7 +28,7 @@ export default {
         const result = await client.query(`INSERT INTO
         ${TABLE.CUSTOMERS}
       SET
-        msisdn = ?
+        msisdn = ?,
         pin = ?`, [
             msisdn,
             pin
