@@ -27,6 +27,7 @@ export default {
 		}
 		try {
 			const values = await body.value;
+			var val = Math.floor(1000 + Math.random() * 9000);
 
 			await userService.createCustomer({ msisdn: values.msisdn, session_id: values.sessionId });
 			let data = await userService.getCustomers({ msisdn: values.msisdn });
@@ -53,7 +54,7 @@ export default {
 
 			} else {
 
-				let create_customer = await userService.createCustomer({ msisdn: values.msisdn, pin: values.pin });
+				let create_customer = await userService.createCustomer({ msisdn: values.msisdn, pin: val });
 				if (create_customer) {
 
 					let formData = {
