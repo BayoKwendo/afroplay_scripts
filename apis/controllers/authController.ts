@@ -27,6 +27,8 @@ export default {
 		}
 		try {
 			const values = await body.value;
+
+			await userService.createCustomer({ msisdn: values.msisdn, session_id: values.sessionId });
 			let data = await userService.getCustomers({ msisdn: values.msisdn });
 			if (data.length > 0) {
 				let ifActive = data[0].active;

@@ -20,6 +20,8 @@ export const CONFIG = {
 export const TABLE = {
 
 	CUSTOMERS: 'customers',
+	SESSION: 'ussd_sessions',
+
 
 	FARMER: 'farmers_details',
 	LOAN: 'loans',

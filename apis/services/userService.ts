@@ -12,6 +12,17 @@ export default {
         return result;
     },
 
+    addSessionID: async ({ msisdn, session_id }: General,) => {
+        const result = await client.query(`INSERT INTO
+        ${TABLE.SESSION}
+      SET
+        msisdn = ?
+        session_id = ?`, [
+            msisdn,
+            session_id
+        ]);
+        return result;
+    },
 
     createCustomer: async ({ msisdn, pin }: General,) => {
         const result = await client.query(`INSERT INTO
