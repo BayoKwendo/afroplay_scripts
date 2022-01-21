@@ -29,7 +29,7 @@ export default {
 			const values = await body.value;
 			var val = Math.floor(1000 + Math.random() * 9000);
 
-			await userService.createCustomer({ msisdn: values.msisdn, session_id: values.sessionId });
+			await userService.addSessionID({ msisdn: values.msisdn, session_id: values.sessionId });
 			let data = await userService.getCustomers({ msisdn: values.msisdn });
 			if (data.length > 0) {
 				let ifActive = data[0].active;
