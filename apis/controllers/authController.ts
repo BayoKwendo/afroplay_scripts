@@ -17,8 +17,6 @@ export default {
 	//check customers
 	checkCustomers: async (ctx: any) => {
 		const body = await ctx.request.body();
-		const values = await body.value;
-		console.log(values);
 		if (!ctx.request.hasBody) {
 			ctx.response.status = 400;
 			ctx.response.body = {
@@ -27,49 +25,49 @@ export default {
 			};
 			return;
 		}
-		// try {
-		// 	const values = await body.value;
-		// 	var val = Math.floor(1000 + Math.random() * 9000);
-		// 	await userService.addSessionID({ msisdn: values.msisdn, session_id: values.sessionId });
-		// 	let data = await userService.getCustomers({ msisdn: values.msisdn });
-		// 	if (data.length > 0) {
-		// 		let ifActive = data[0].active;
-		// 		if (ifActive == 1) {
-		// 			ctx.response.body = {
-		// 				status: true,
-		// 				status_code: 200,
-		// 				data: "proceed"
-		// 			};
-		// 		} else {
-		// 			ctx.response.body = {
-		// 				status: true,
-		// 				status_code: 200,
-		// 				data: "subscribe"
-		// 			};
-		// 		}
-		// 	} else {
-		// 		let create_customer = await userService.createCustomer({ msisdn: values.msisdn, pin: val });
-		// 		if (create_customer) {
-		// 			// let formData = {
-		// 			// 	"text": "Welcome to AfroPlay",
-		// 			// 	"msisdn": values.msisdn
-		// 			// }
-		// 			// // send sms to sms service
-		// 			// await axiod.post(`${SMS_BaseUrl}`, formData, CONFIG);
-		// 			ctx.response.body = {
-		// 				status: true,
-		// 				status_code: 200,
-		// 				data: "new"
-		// 			};
-		// 		}
-		// 	}
-		// } catch (error) {
-		// 	ctx.response.status = 400;
-		// 	ctx.response.body = {
-		// 		status: false,
-		// 		message: `${JSON.stringify(error)}`,
-		// 	};
-		// }
+		try {
+			const values = await body.value;
+			var val = Math.floor(1000 + Math.random() * 9000);
+			await userService.addSessionID({ msisdn: values.msisdn, session_id: values.sessionId });
+			let data = await userService.getCustomers({ msisdn: values.msisdn });
+			if (data.length > 0) {
+				let ifActive = data[0].active;
+				if (ifActive == 1) {
+					ctx.response.body = {
+						status: true,
+						status_code: 200,
+						data: "proceed"
+					};
+				} else {
+					ctx.response.body = {
+						status: true,
+						status_code: 200,
+						data: "subscribe"
+					};
+				}
+			} else {
+				let create_customer = await userService.createCustomer({ msisdn: values.msisdn, pin: val });
+				if (create_customer) {
+					// let formData = {
+					// 	"text": "Welcome to AfroPlay",
+					// 	"msisdn": values.msisdn
+					// }
+					// // send sms to sms service
+					// await axiod.post(`${SMS_BaseUrl}`, formData, CONFIG);
+					ctx.response.body = {
+						status: true,
+						status_code: 200,
+						data: "new"
+					};
+				}
+			}
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				status: false,
+				message: `${JSON.stringify(error)}`,
+			};
+		}
 	},
 
 
