@@ -58,7 +58,7 @@ export default {
 				if (create_customer) {
 
 					let formData = {
-						"text": values.message.toString(),
+						"text": "Welcome to AfroPlay",
 						"msisdn": values.msisdn
 					}
 					// send sms to sms service
