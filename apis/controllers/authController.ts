@@ -28,22 +28,17 @@ export default {
 		try {
 			const values = await body.value;
 			var val = Math.floor(1000 + Math.random() * 9000);
-
 			await userService.addSessionID({ msisdn: values.msisdn, session_id: values.sessionId });
 			let data = await userService.getCustomers({ msisdn: values.msisdn });
 			if (data.length > 0) {
 				let ifActive = data[0].active;
 				if (ifActive == 1) {
-					ctx.response.status = true;
-					ctx.response.status_code = 200;
 					ctx.response.body = {
 						status: true,
 						status_code: 200,
 						data: "proceed"
 					};
 				} else {
-					ctx.response.status = true;
-					ctx.response.status_code = 200;
 					ctx.response.body = {
 						status: true,
 						status_code: 200,
@@ -53,13 +48,12 @@ export default {
 			} else {
 				let create_customer = await userService.createCustomer({ msisdn: values.msisdn, pin: val });
 				if (create_customer) {
-					let formData = {
-						"text": "Welcome to AfroPlay",
-						"msisdn": values.msisdn
-					}
-					// send sms to sms service
-					await axiod.post(`${SMS_BaseUrl}`, formData, CONFIG);
-
+					// let formData = {
+					// 	"text": "Welcome to AfroPlay",
+					// 	"msisdn": values.msisdn
+					// }
+					// // send sms to sms service
+					// await axiod.post(`${SMS_BaseUrl}`, formData, CONFIG);
 					ctx.response.body = {
 						status: true,
 						status_code: 200,
@@ -67,12 +61,11 @@ export default {
 					};
 				}
 			}
-
 		} catch (error) {
 			ctx.response.status = 400;
 			ctx.response.body = {
 				status: false,
-				message: `${error}`,
+				message: `${JSON.stringify(error)}`,
 			};
 		}
 	},
