@@ -33,7 +33,6 @@ export default {
 			let data = await userService.getCustomers({ msisdn: values.msisdn });
 			if (data.length > 0) {
 				let ifActive = data[0].active;
-
 				if (ifActive == 1) {
 					ctx.response.status = true;
 					ctx.response.status_code = 200;
@@ -51,21 +50,16 @@ export default {
 						data: "subscribe"
 					};
 				}
-
 			} else {
-
 				let create_customer = await userService.createCustomer({ msisdn: values.msisdn, pin: val });
 				if (create_customer) {
-
 					let formData = {
 						"text": "Welcome to AfroPlay",
 						"msisdn": values.msisdn
 					}
 					// send sms to sms service
-					await axiod.post(`${SMS_BaseUrl}`, formData, CONFIG)
+					await axiod.post(`${SMS_BaseUrl}`, formData, CONFIG);
 
-					ctx.response.status = true;
-					ctx.response.status_code = 200;
 					ctx.response.body = {
 						status: true,
 						status_code: 200,
