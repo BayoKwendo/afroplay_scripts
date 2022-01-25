@@ -21,6 +21,7 @@ export const TABLE = {
 
 	CUSTOMERS: 'customers',
 	SESSION: 'ussd_sessions',
+	GAME: 'games',
 
 
 	FARMER: 'farmers_details',

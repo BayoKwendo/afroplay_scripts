@@ -1,4 +1,6 @@
 import userService from '../services/userService.ts';
+import { connect } from "https://deno.land/x/redis/mod.ts";
+
 import axiod from 'https://deno.land/x/axiod@0.22/mod.ts';
 
 import { SMS_BaseUrl, CONFIG } from '../db/config.ts';
@@ -14,8 +16,22 @@ import { key } from '../exports.ts';
 export default {
 
 
+
+
 	//check customers
 	checkCustomers: async (ctx: any) => {
+
+		const redis = await connect({
+			hostname: "127.0.0.1",
+			port: 6379,
+		});
+		// console.log(redis);
+		// var client = redis.createClient({ host: 'ngombe_redis', port: 6379 });
+		// await client.connect().then(() => {
+		// 	console.log("Redis connected");
+		// }).catch(err => {
+		// 	console.log(err)
+		// });
 		const body = await ctx.request.body();
 		if (!ctx.request.hasBody) {
 			ctx.response.status = 400;
@@ -66,6 +82,124 @@ export default {
 			ctx.response.body = {
 				status: false,
 				message: `${JSON.stringify(error)}`,
+			};
+		}
+	},
+
+	/**
+* @description GAME 
+*/
+	createGame: async ({ request, response }: { request: any, response: any }) => {
+		const body = await request.body();
+		if (!request.hasBody) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
+
+			await userService.createGame({
+				name: values.name,
+			});
+			response.body = {
+				success: true,
+				message: 'Success',
+			};
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
+
+
+	// DELETE users
+
+	deleteGame: async ({ params, response }: { params: { id: string }, response: any }) => {
+		try {
+			console.log(params.id);
+			const data = await userService.deleteGame({ id: params.id });
+			if (data.affectedRows > 0) {
+				response.status = 200;
+				response.body = {
+					status: true,
+					status_code: 200,
+					message: 'Success',
+				};
+			} else {
+				response.status = 201;
+				response.body = {
+					status: false,
+					status_code: 200,
+					message: 'Error deleting!',
+				};
+			}
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `${error}`,
+			};
+		}
+	},
+	/**
+   * @description edit user
+   */
+	editGame: async ({ request, response }: { request: any, response: any }) => {
+		const body = await request.body();
+		if (!request.hasBody) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
+			await userService.editGame({
+				name: values.name,
+				id: values.id
+			});
+			response.body = {
+				success: true,
+				message: 'Success',
+			};
+
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
+
+
+	getGame: async (ctx: any) => {
+		try {
+			// console.log(total)
+			let data;
+			data = await userService.getGame();
+
+			console.log(data)
+
+			ctx.response.body = {
+				status: true,
+				status_code: 200,
+				data: data,
+			};
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				status: false,
+				message: `${error}`,
 			};
 		}
 	},

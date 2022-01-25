@@ -36,26 +36,38 @@ export default {
         return result;
     },
 
-    // editUser: async ({ username, msisdn, name, branch_id, role_id, id, repeat_password }: User,) => {
-    //     const result = await client.query(`UPDATE 
-    //       users SET username =?, msisdn=?, branch_id=?, name=?,role_id=? WHERE id = ?`, [
-    //         username,
-    //         msisdn,
-    //         branch_id,
-    //         name,
-    //         role_id,
-    //         id
-    //     ]);
-    //     return result;
-    // },
+
+    //GAME
+    createGame: async ({ name }: General,) => {
+        const result = await client.query(`INSERT INTO 
+          ${TABLE.GAME} SET name =?`, [
+            name
+        ]);
+        return result;
+    },
 
 
-    // deleteUser: async ({ id }: User,) => {
-    //     const result = await client.query(`DELETE FROM users WHERE id = ?`, [
-    //         id
-    //     ]);
-    //     return result;
-    // },
+    editGame: async ({ name, id }: General) => {
+        const result = await client.query(`UPDATE 
+          ${TABLE.GAME} SET name =? WHERE id = ?`, [
+            name,
+            id
+        ]);
+        return result;
+    },
+
+
+    deleteGame: async ({ id }: General,) => {
+        const result = await client.query(`DELETE FROM ${TABLE.GAME} WHERE id = ?`, [
+            id
+        ]);
+        return result;
+    },
+
+    getGame: async () => {
+        const result = await client.query(`SELECT name,id, created_on FROM  ${TABLE.GAME}`);
+        return result;
+    },
 
 
     // createBranch: async ({ branch_name }: User,) => {
