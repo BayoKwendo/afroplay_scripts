@@ -5,6 +5,8 @@ import { green, yellow } from "https://deno.land/std/fmt/colors.ts";
 import { oakCors } from "https://deno.land/x/cors/mod.ts";
 
 import userRouter from "./routes/user.route.ts";
+import customerRouter from "./routes/customer.route.ts";
+
 import testRouter from "./routes/connect.route.ts";
 import logger from './middlewares/logger.ts';
 import notFound from './middlewares/notFound.ts';
@@ -26,6 +28,10 @@ app.use(logger.responseTime);
 
 app.use(userRouter.routes());
 app.use(userRouter.allowedMethods());
+
+
+app.use(customerRouter.routes());
+app.use(customerRouter.allowedMethods());
 
 app.use(testRouter.routes());
 app.use(testRouter.allowedMethods());

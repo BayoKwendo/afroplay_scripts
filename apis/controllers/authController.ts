@@ -208,321 +208,282 @@ export default {
 	// 	/**
 	//    * @description Get all Employee List
 	//    */
-	// 	loginUser: async (ctx: any) => {
-	// 		const body = await ctx.request.body();
-	// 		if (!ctx.request.hasBody) {
-	// 			ctx.response.status = 400;
-	// 			ctx.response.body = {
-	// 				success: false,
-	// 				message: 'No data provided',
-	// 			};
-	// 			return;
-	// 		}
-	// 		try {
-	// 			const values = await body.value;
+	loginUser: async (ctx: any) => {
+		const body = await ctx.request.body();
+		if (!ctx.request.hasBody) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
 
-	// 			const isAvailable = await userService.loginUser({ username: values.username });
-	// 			if (!isAvailable) {
-	// 				ctx.response.status = 404;
-	// 				ctx.response.body = {
-	// 					status: false,
-	// 					message: 'Username not found',
-	// 				};
-	// 				return;
-	// 			} else if (!compareSync(values.password, isAvailable.password)) {
-	// 				ctx.response.status = 404;
-	// 				ctx.response.body = {
-	// 					status: false,
-	// 					message: 'Password Incorrect',
-	// 				};
-	// 				return;
-	// 			} else {
+			const isAvailable = await userService.loginUser({ username: values.username });
+			if (!isAvailable) {
+				ctx.response.status = 404;
+				ctx.response.body = {
+					status: false,
+					message: 'Username not found',
+				};
+				return;
+			} else if (!compareSync(values.password, isAvailable.password)) {
+				ctx.response.status = 404;
+				ctx.response.body = {
+					status: false,
+					message: 'Password Incorrect',
+				};
+				return;
+			} else {
 
-	// 				console.log(isAvailable);
-	// 				const data = {
-	// 					username: isAvailable.username,
-	// 					msisdn: isAvailable.msisdn,
-	// 					name: isAvailable.role_name,
-	// 					mobipesa_name: isAvailable.name,
-	// 					branch_id: isAvailable.branch_id,
-	// 					user_id: isAvailable.user_id,
-	// 					branch_name: isAvailable.branch_name,
-	// 					role_id: isAvailable.role_id,
-	// 				};
-	// 				const oneHour = 43200;
+				console.log(isAvailable);
+				const data = {
+					username: isAvailable.username,
+					msisdn: isAvailable.msisdn,
+					name: isAvailable.role_name,
+					mobipesa_name: isAvailable.name,
+					user_id: isAvailable.user_id,
+					role_id: isAvailable.role_id,
+				};
+				const oneHour = 43200;
 
-	// 				// const jwt = "fff"
-	// 				const jwt = await create(
-	// 					{ alg: 'HS512', typ: 'JWT' },
-	// 					{ iss: isAvailable.email, exp: getNumericDate(oneHour) },
-	// 					key
-	// 				);
-	// 				ctx.response.body = {
-	// 					success: true,
-	// 					token: jwt,
-	// 					message: data,
-	// 				};
-	// 			}
-	// 		} catch (error) {
-	// 			ctx.response.status = 400;
-	// 			ctx.response.body = {
-	// 				success: false,
-	// 				message: `Error: ${error}`,
-	// 			};
-	// 		}
-	// 	},
-	// 	/**
-	//    * @description Get all Employee List
-	//    */
-	// 	createUser: async ({ request, response }: { request: any, response: any }) => {
-	// 		const body = await request.body();
-	// 		if (!request.hasBody) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: 'No data provided',
-	// 			};
-	// 			return;
-	// 		}
-	// 		try {
-	// 			const values = await body.value;
-	// 			const hashedPassword = hashSync(values.password);
+				// const jwt = "fff"
+				const jwt = await create(
+					{ alg: 'HS512', typ: 'JWT' },
+					{ iss: isAvailable.email, exp: getNumericDate(oneHour) },
+					key
+				);
+				ctx.response.body = {
+					success: true,
+					token: jwt,
+					message: data,
+				};
+			}
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
+	/**
+   * @description Get all Employee List
+   */
+	createUser: async ({ request, response }: { request: any, response: any }) => {
+		const body = await request.body();
+		if (!request.hasBody) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
+			const hashedPassword = hashSync(values.password);
 
-	// 			if (values.password === values.confirmPassword) {
+			if (values.password === values.confirmPassword) {
 
-	// 				await userService.createUser({
-	// 					username: values.username,
-	// 					msisdn: values.msisdn,
-	// 					name: values.name,
-	// 					role_id: values.role_id,
-	// 					branch_id: values.branch_id,
-	// 					password: hashedPassword,
-	// 				});
-	// 				response.body = {
-	// 					success: true,
-	// 					message: 'User Created Successfully',
-	// 				};
-	// 			} else {
-	// 				response.status = 400;
-	// 				response.body = {
-	// 					success: false,
-	// 					message: `Password didn't match`,
-	// 				};
-	// 			}
-	// 		} catch (error) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: `Error: ${error}`,
-	// 			};
-	// 		}
-	// 	},
+				await userService.createUser({
+					username: values.username,
+					msisdn: values.msisdn,
+					name: values.name,
+					role_id: values.role_id,
+					password: hashedPassword,
+				});
+				response.body = {
+					success: true,
+					message: 'User Created Successfully',
+				};
+			} else {
+				response.status = 400;
+				response.body = {
+					success: false,
+					message: `Password didn't match`,
+				};
+			}
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
 
 
-	// 	// DELETE users
+	// DELETE users
 
-	// 	deleteAccount: async ({ params, response }: { params: { id: string }, response: any }) => {
-	// 		try {
-	// 			console.log(params.id);
-	// 			const data = await userService.deleteUser({ id: params.id });
-	// 			if (data.affectedRows > 0) {
-	// 				response.status = 200;
-	// 				response.body = {
-	// 					status: true,
-	// 					status_code: 200,
-	// 					message: 'Account has been deleted',
-	// 				};
-	// 			} else {
-	// 				response.status = 201;
-	// 				response.body = {
-	// 					status: true,
-	// 					status_code: 200,
-	// 					message: 'Error deleting the account',
-	// 				};
-	// 			}
-	// 		} catch (error) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: `${error}`,
-	// 			};
-	// 		}
-	// 	},
-	// 	/**
-	//    * @description edit user
-	//    */
-	// 	editUser: async ({ request, response }: { request: any, response: any }) => {
-	// 		const body = await request.body();
-	// 		if (!request.hasBody) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: 'No data provided',
-	// 			};
-	// 			return;
-	// 		}
-	// 		try {
-	// 			const values = await body.value;
-	// 			// const hashedPassword = hashSync(values.password);
+	deleteAccount: async ({ params, response }: { params: { id: string }, response: any }) => {
+		try {
+			console.log(params.id);
+			const data = await userService.deleteUser({ id: params.id });
+			if (data.affectedRows > 0) {
+				response.status = 200;
+				response.body = {
+					status: true,
+					status_code: 200,
+					message: 'Account has been deleted',
+				};
+			} else {
+				response.status = 201;
+				response.body = {
+					status: true,
+					status_code: 200,
+					message: 'Error deleting the account',
+				};
+			}
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `${error}`,
+			};
+		}
+	},
+	/**
+   * @description edit user
+   */
+	editUser: async ({ request, response }: { request: any, response: any }) => {
+		const body = await request.body();
+		if (!request.hasBody) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
+			// const hashedPassword = hashSync(values.password);
+			// if (values.password === values.confirmPassword) {
 
-	// 			// if (values.password === values.confirmPassword) {
+			await userService.editUser({
+				username: values.username,
+				msisdn: values.msisdn,
+				name: values.name,
+				role_id: values.role_id,
+				id: values.id
+			});
+			response.body = {
+				success: true,
+				message: 'User Updated Successfully',
+			};
 
-	// 			await userService.editUser({
-	// 				username: values.username,
-	// 				msisdn: values.msisdn,
-	// 				name: values.name,
-	// 				role_id: values.role_id,
-	// 				branch_id: values.branch_id,
-	// 				id: values.id
-	// 			});
-	// 			response.body = {
-	// 				success: true,
-	// 				message: 'User Updated Successfully',
-	// 			};
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
 
-	// 		} catch (error) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: `Error: ${error}`,
-	// 			};
-	// 		}
-	// 	},
+	// update user password
+	updateUser: async ({ request, response }: { request: any, response: any }) => {
+		const body = await request.body();
+		if (!request.hasBody) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
+			const hashedPassword = hashSync(values.password);
 
-	// 	// update user password
-	// 	updateUser: async ({ request, response }: { request: any, response: any }) => {
-	// 		const body = await request.body();
-	// 		if (!request.hasBody) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: 'No data provided',
-	// 			};
-	// 			return;
-	// 		}
-	// 		try {
-	// 			const values = await body.value;
-	// 			const hashedPassword = hashSync(values.password);
-
-	// 			console.log(hashedPassword);
-	// 			await userService.updateUser({
-	// 				username: values.username,
-	// 				password: hashedPassword,
-	// 			});
-	// 			response.body = {
-	// 				success: true,
-	// 				message: 'User Updated Successfully',
-	// 			};
-	// 		} catch (error) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: `Error: ${error}`,
-	// 			};
-	// 		}
-	// 	},
+			console.log(hashedPassword);
+			await userService.updateUser({
+				username: values.username,
+				password: hashedPassword,
+			});
+			response.body = {
+				success: true,
+				message: 'User Updated Successfully',
+			};
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
 
 
-	// 	/**
-	// * @description Get Create Branch
-	// */
-	// 	createBranch: async ({ request, response }: { request: any, response: any }) => {
-	// 		const body = await request.body();
-	// 		if (!request.hasBody) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: 'No data provided',
-	// 			};
-	// 			return;
-	// 		}
-	// 		try {
-	// 			const values = await body.value;
+	//get roles
+	getRoles: async (ctx: any) => {
+		try {
+			// let kw = request.url.searchParams.get('page_number');
+			let { filter_value, period } = getQuery(ctx, { mergeParams: true });
+			// console.log(total)
 
-	// 			await userService.createBranch({
-	// 				branch_name: values.branch_name
-	// 			});
-	// 			response.body = {
-	// 				success: true,
-	// 				message: 'Branch Created Successfully',
-	// 			};
+			let data;
 
-	// 		} catch (error) {
-	// 			response.status = 400;
-	// 			response.body = {
-	// 				success: false,
-	// 				message: `Error: ${error}`,
-	// 			};
-	// 		}
-	// 	},
+			let credit_total;
 
+			console.log({
+				filter_value: Number(filter_value),
+				period: Number(period)
+			})
 
-	// 	//get loan statement
-	// 	getBranches: async (ctx: any) => {
-	// 		try {
-	// 			// let kw = request.url.searchParams.get('page_number');
-	// 			let { filter_value, period } = getQuery(ctx, { mergeParams: true });
-	// 			// console.log(total)
+			data = await userService.getRoles();
 
-	// 			let data;
-
-	// 			let credit_total;
-
-	// 			console.log({
-	// 				filter_value: Number(filter_value),
-	// 				period: Number(period)
-	// 			})
-
-	// 			data = await userService.getBranch();
-
-	// 			ctx.response.body = {
-	// 				status: true,
-	// 				credit_sum: credit_total,
-	// 				status_code: 200,
-	// 				data: data,
-	// 			};
-	// 		} catch (error) {
-	// 			ctx.response.status = 400;
-	// 			ctx.response.body = {
-	// 				status: false,
-	// 				message: `${error}`,
-	// 			};
-	// 		}
-	// 	},
+			ctx.response.body = {
+				status: true,
+				credit_sum: credit_total,
+				status_code: 200,
+				data: data,
+			};
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				status: false,
+				message: `${error}`,
+			};
+		}
+	},
 
 
-	// 	//get roles
-	// 	getRoles: async (ctx: any) => {
-	// 		try {
-	// 			// let kw = request.url.searchParams.get('page_number');
-	// 			let { filter_value, period } = getQuery(ctx, { mergeParams: true });
-	// 			// console.log(total)
+	//get users
+	getUsers: async (ctx: any) => {
+		try {
+			// let kw = request.url.searchParams.get('page_number');
+			let { filter_value, period } = getQuery(ctx, { mergeParams: true });
+			// console.log(total)
 
-	// 			let data;
+			let data;
 
-	// 			let credit_total;
+			let credit_total;
 
-	// 			console.log({
-	// 				filter_value: Number(filter_value),
-	// 				period: Number(period)
-	// 			})
+			console.log({
+				filter_value: Number(filter_value),
+				period: Number(period)
+			})
 
-	// 			data = await userService.getRoles();
+			data = await userService.getAllUsers();
 
-	// 			ctx.response.body = {
-	// 				status: true,
-	// 				credit_sum: credit_total,
-	// 				status_code: 200,
-	// 				data: data,
-	// 			};
-	// 		} catch (error) {
-	// 			ctx.response.status = 400;
-	// 			ctx.response.body = {
-	// 				status: false,
-	// 				message: `${error}`,
-	// 			};
-	// 		}
-	// 	},
+			ctx.response.body = {
+				status: true,
+				credit_sum: credit_total,
+				status_code: 200,
+				data: data,
+			};
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				status: false,
+				message: `${error}`,
+			};
+		}
+	},
 
 
 

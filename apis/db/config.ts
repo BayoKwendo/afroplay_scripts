@@ -22,31 +22,12 @@ export const TABLE = {
 	CUSTOMERS: 'customers',
 	SESSION: 'ussd_sessions',
 	GAME: 'games',
+	PRODUCT: 'bid_products',
 
-
-	FARMER: 'farmers_details',
-	LOAN: 'loans',
 	SMS_LOGS: 'sms_logs',
-	VERIFICATION_CODES: 'verification',
-	WITHDRAWAL_REQUEST: 'withdraw_request',
-	WITHDRAWAL_ARCHIVES: 'withdrawal_archives',
-
-	LOAN_STATUS: 'laon_status',
-
 	USERS: 'users',
-
-	MESSAGE: "call_messages",
-	GUARANTORS: 'loan_guarantors',
-
 	BRANCHES: 'branches',
-
-	ROLES: 'roles',
-	WITNESSES: 'loan_witnesses',
-	LOAN_STATEMENT: "loan_statements",
-	DEPOSIT: "transactions_deposits",
-	SUSPEND_ACCOUNT: "suspend_account",
-	LOAN_DEPOSITS: "transactions_deposits",
-	LIVESTOCK: 'livestock_details',
+	ROLES: 'roles'
 };
 
 

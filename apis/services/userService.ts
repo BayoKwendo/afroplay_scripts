@@ -69,54 +69,71 @@ export default {
         return result;
     },
 
+    getRoles: async () => {
+        const result = await client.query(`SELECT * FROM  ${TABLE.ROLES}`);
+        return result;
+    },
 
-    // createBranch: async ({ branch_name }: User,) => {
-    //     const result = await client.query(`INSERT INTO 
-    //       ${TABLE.BRANCHES} SET branch_name =?`, [
-    //         branch_name
-    //     ]);
-    //     return result;
-    // },
-
-
-    // // get braches
-    // getBranch: async () => {
-    //     const result = await client.query(`SELECT * FROM  ${TABLE.BRANCHES}`);
-    //     return result;
-    // },
-
-    // getRoles: async () => {
-    //     const result = await client.query(`SELECT * FROM  ${TABLE.ROLES}`);
-    //     return result;
-    // },
-
-    // // login user
-    // loginUser: async ({ username }: User) => {
-    //     const [result] = await client.query(
-    //         `SELECT s.*, s.id user_id, r.name role_name, s.msisdn, r.id role_id, b.id branch_id, b.branch_name FROM users s 
-    //          inner join roles r on s.role_id = r.id
-    //          inner join ${TABLE.BRANCHES} b on s.branch_id = b.id  
-    //          WHERE s.username = ?`,
-    //         [username],
-    //     );
-    //     return result;
-    // },
+    // login user
+    loginUser: async ({ username }: General) => {
+        const [result] = await client.query(
+            `SELECT s.*, s.id user_id, r.name role_name, s.msisdn, r.id role_id FROM users s 
+             inner join roles r on s.role_id = r.id
+             WHERE s.username = ?`,
+            [username],
+        );
+        return result;
+    },
 
 
-    // // get users
-    // getAllUsers: async () => {
-    //     const result = await client.query(
-    //         `SELECT s.*, s.id user_id, r.name role_name, r.id role_id, b.id branch_id, b.branch_name FROM users s 
-    //          inner join roles r on s.role_id = r.id
-    //          inner join ${TABLE.BRANCHES} b on s.branch_id = b.id`,
-    //     );
-    //     return result;
-    // },
+    // get users
+    getAllUsers: async () => {
+        const result = await client.query(
+            `SELECT s.*, s.id user_id, r.name role_name, r.id role_id FROM users s 
+             inner join roles r on s.role_id = r.id`,
+        );
+        return result;
+    },
 
-    // updateUser: async ({ password, username }: User,) => {
-    //     const query = await client.query(`UPDATE users SET password = ? WHERE username = ? `, [password, username]);
-    //     return query;
-    // },
+    updateUser: async ({ password, username }: General,) => {
+        const query = await client.query(`UPDATE users SET password = ? WHERE username = ? `, [password, username]);
+        return query;
+    },
+
+    editUser: async ({ username, msisdn, name, role_id, id }: General) => {
+        const result = await client.query(`UPDATE 
+          users SET username =?, msisdn=?,  name=?,role_id=? WHERE id = ?`, [
+            username,
+            msisdn,
+            name,
+            role_id,
+            id
+        ]);
+        return result;
+    },
+
+
+    deleteUser: async ({ id }: General) => {
+        const result = await client.query(`DELETE FROM users WHERE id = ?`, [
+            id
+        ]);
+        return result;
+    },
+
+
+    createUser: async ({ username, msisdn, name, role_id, password, repeat_password }: General) => {
+        const result = await client.query(`INSERT INTO 
+          users SET username =?, msisdn=?, name=?,role_id=?, password=?`, [
+            username,
+            msisdn,
+            name,
+            role_id,
+            password
+        ]);
+        return result;
+    },
+
+
 
 
 };
