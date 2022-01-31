@@ -228,6 +228,28 @@ export default {
 		}
 	},
 
+	// GET PRODUCT
 
 
+	getBidProduct: async (ctx: any) => {
+		try {
+			// console.log(total)
+			let data;
+			data = await customerService.getBidProduct();
+
+			console.log(data)
+
+			ctx.response.body = {
+				status: true,
+				status_code: 200,
+				data: data,
+			};
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				status: false,
+				message: `${error}`,
+			};
+		}
+	},
 };

@@ -7,7 +7,7 @@ export default {
     // get customers
     getCustomers: async ({ msisdn }: General) => {
         const result = await client.query(
-            `SELECT msisdn from ${TABLE.CUSTOMERS} WHERE msisdn = ${msisdn}`,
+            `SELECT msisdn, balance,active from ${TABLE.CUSTOMERS} WHERE msisdn = ${msisdn}`,
         );
         return result;
     },

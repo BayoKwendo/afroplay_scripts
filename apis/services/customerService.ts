@@ -84,4 +84,9 @@ export default {
 		return result;
 	},
 
+
+	getBidProduct: async () => {
+		const result = await client.query(`SELECT name,id,value FROM  ${TABLE.PRODUCT} WHERE status = 1 ORDER BY id limit 1`);
+		return result;
+	}
 };

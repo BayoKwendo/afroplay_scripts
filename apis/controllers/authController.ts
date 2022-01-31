@@ -52,12 +52,14 @@ export default {
 					ctx.response.body = {
 						status: true,
 						status_code: 200,
+						balance: data[0].balance,
 						data: "proceed"
 					};
 				} else {
 					ctx.response.body = {
 						status: true,
 						status_code: 200,
+						balance: data[0].balance,
 						data: "subscribe"
 					};
 				}
@@ -73,6 +75,7 @@ export default {
 					ctx.response.body = {
 						status: true,
 						status_code: 200,
+						balance: 0,
 						data: "new"
 					};
 				}

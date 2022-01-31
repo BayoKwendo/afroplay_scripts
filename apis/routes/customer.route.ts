@@ -11,8 +11,12 @@ router
 
 	.post('/product', customerController.createProduct)
 	.get('/product', customerController.getProduct)
+	
+	.get('/bid_product', customerController.getBidProduct)
 	.put('/product', customerController.editProduct)
 	.delete('/product/:id', customerController.deleteProduct)
+
+
 
 	.put('/product_status', customerController.updateProduct)
 
