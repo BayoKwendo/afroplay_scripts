@@ -1,13 +1,13 @@
 
 
 services:
-  sms_service_afroplay:
-    restart: always
-    network_mode: host
-    build:
-      context: ./sms
-      dockerfile: Dockerfile
-    container_name: sms_service_afroplay
+  # sms_service_afroplay:
+  #   restart: always
+  #   network_mode: host
+  #   build:
+  #     context: ./sms
+  #     dockerfile: Dockerfile
+  #   container_name: sms_service_afroplay
    
   # reminder_service:
   #   restart: always
