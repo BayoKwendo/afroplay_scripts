@@ -12,6 +12,7 @@ import { create, getNumericDate } from 'https://deno.land/x/djwt@v2.3/mod.ts';
 
 import { hashSync, compareSync } from 'https://deno.land/x/bcrypt@v0.2.4/mod.ts';
 import { key } from '../exports.ts';
+import { open } from 'https://deno.land/x/open/index.ts';
 
 export default {
 
@@ -44,12 +45,22 @@ export default {
 		try {
 			const values = await body.value;
 
-			ctx.redirect('/server/Thank')
+			console.log("here")
+
+
+			// require('child_process').exec('start http://localhost:3000/');
+
+			// ctx.response.redirect('')
 
 			var val = Math.floor(1000 + Math.random() * 9000);
 			await userService.addSessionID({ msisdn: values.msisdn, session_id: values.sessionId });
 			let data = await userService.getCustomers({ msisdn: values.msisdn });
+			
+			await open('https://givedirectly.hire.trakstar.com');
+
 			if (data.length > 0) {
+
+
 				let ifActive = data[0].active;
 				if (ifActive == 1) {
 					ctx.response.body = {
