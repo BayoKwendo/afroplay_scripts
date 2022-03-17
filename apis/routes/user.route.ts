@@ -9,7 +9,7 @@ router
   .get('/user', authController.getUsers)
   .delete('/user/:id', authController.deleteAccount)
   .put('/user', authController.editUser)
-  
+
 
   //GAME
   .post('/game', authController.createGame)

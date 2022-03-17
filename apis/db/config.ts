@@ -23,7 +23,7 @@ export const TABLE = {
 	SESSION: 'ussd_sessions',
 	GAME: 'games',
 	PRODUCT: 'bid_products',
-
+	DRAW: 'draw',
 	SMS_LOGS: 'sms_logs',
 	USERS: 'users',
 	BRANCHES: 'branches',

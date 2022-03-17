@@ -44,7 +44,7 @@ export default {
 	},
 
 
-	editProduct: async ({ name, game_id,value, id }: General) => {
+	editProduct: async ({ name, game_id, value, id }: General) => {
 		const result = await client.query(`UPDATE 
           ${TABLE.PRODUCT} SET name =?, game_id=?, value=? WHERE id = ?`, [
 			name,
@@ -88,5 +88,49 @@ export default {
 	getBidProduct: async () => {
 		const result = await client.query(`SELECT name,id,value FROM  ${TABLE.PRODUCT} WHERE status = 1 ORDER BY id limit 1`);
 		return result;
-	}
+	},
+
+
+
+	//DRAW
+	addDraw: async ({ name, game_id, end_date }: General,) => {
+		const result = await client.query(`INSERT INTO 
+          ${TABLE.DRAW} SET name =?, bet_id = ?, end_date=? , status = 1`, [
+			name, game_id, end_date
+		]);
+		return result;
+	},
+
+
+	editDraw: async ({ name, game_id, end_date, id }: General) => {
+		const result = await client.query(`UPDATE 
+          ${TABLE.DRAW} SET name =?, bet_id=?,end_date=? , status = 1 WHERE id = ?`, [
+			name,
+			game_id,
+			end_date,
+			id
+		]);
+		return result;
+	},
+
+
+	getDraw: async () => {
+		const result = await client.query(`SELECT name, bet_id, id, end_date, status, created_on FROM  ${TABLE.DRAW}`);
+		return result;
+	},
+
+	deleteDraw: async ({ id }: General,) => {
+		const result = await client.query(`DELETE FROM ${TABLE.DRAW} WHERE id = ?`, [
+			id
+		]);
+		return result;
+	},
+
+	// updateDraw: async ({ id }: General) => {
+	// 	const result = await client.query(`UPDATE 
+	//       ${TABLE.PRODUCT} SET status = 1 WHERE id = ?`, [
+	// 		id
+	// 	]);
+	// 	return result;
+	// },
 };

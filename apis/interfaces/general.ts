@@ -12,12 +12,11 @@ export default interface General {
   page_number?: number,
   game_id?: number,
   value?: number,
-
-
   name?: string,
   role_id?: number,
   branch_id?: number,
   branch_name?: string,
+  end_date?: string,
   email?: string,
   salt?: string,
   id?: string,

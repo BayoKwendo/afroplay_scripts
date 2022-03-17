@@ -32,44 +32,29 @@ router
     try {
       const body = await ctx.request.body();
       const values = await body.value;
-      console.log({
-        ApiKey: `${SMS.APIKEY}`,
-        SenderId: `${SMS.SENDERID}`,
-        ClientId: `${SMS.CLIENTID}`,
-        MessageParameters: [
-          {
-            Number: values.msisdn,
-            Text: values.text.toString(),
-          },
-        ],
-      });
-      const postRequest = await fetch(`${SMS.URL}`, {
-        method: 'POST',
+
+      let formData =
+      {
+        apikey: `afb20f472aeb3706b8bfb5f3178c94808c459d7479c46b5a4b3e73a8abcd70e2`,
+        server: `AFMTNVETH`,
+        sim: `1`,
+        number: `2348103431619`,
+        message: `test`,
+        url: ""
+      }
+
+    const sms =  await axiod.post(`https://simhostng.com/api/sms`, formData, {
         headers: {
           'Content-Type': 'application/json',
-          AccessKey: `${SMS.ACCESSKEY}`,
+          'Accept': 'application/json',
         },
-        body: JSON.stringify({
-          ApiKey: `${SMS.APIKEY}`,
-          SenderId: `${SMS.SENDERID}`,
-          ClientId: `${SMS.CLIENTID}`,
-          MessageParameters: [
-            {
-              Number: values.msisdn,
-              Text: values.text.replace(/[^\x00-\x7F]/g, " "),
-            },
-          ],
-        }),
-      });
-      if (postRequest) {
-        await smsService.insertSMSLogs({
-          destination: values.msisdn,
-          origin: `${SMS.SENDERID}`,
-          status: "Sent",
-          message: values.text.toString(),
-        });
-        ctx.response.status = 200;
-      }
+      })
+      ctx.response.status = 200;
+      ctx.response.body = {
+        success: true,
+        message: sms,
+      };
+
     } catch (error) {
       // ctx.response.status = 200;
       ctx.response.status = 400;

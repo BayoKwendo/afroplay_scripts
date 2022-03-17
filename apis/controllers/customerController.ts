@@ -14,6 +14,7 @@ export default {
 
 			const total = await customerService.getCustomerCount();
 
+			
 			console.log("here")
 			if (filter_value == null || filter_value == '') {
 				if (page_number == null) {
@@ -127,6 +128,37 @@ export default {
 			};
 		}
 	},
+
+
+
+	deleteDraw: async ({ params, response }: { params: { id: string }, response: any }) => {
+		try {
+			console.log(params.id);
+			const data = await customerService.deleteDraw({ id: params.id });
+			if (data.affectedRows > 0) {
+				response.status = 200;
+				response.body = {
+					status: true,
+					status_code: 200,
+					message: 'Success',
+				};
+			} else {
+				response.status = 201;
+				response.body = {
+					status: false,
+					status_code: 200,
+					message: 'Error deleting!',
+				};
+			}
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `${error}`,
+			};
+		}
+	},
+
 	/**
 	* @description edit product
 	*/
@@ -252,4 +284,100 @@ export default {
 			};
 		}
 	},
+
+	/**
+* @description DRAW 
+*/
+	addDraw: async ({ request, response }: { request: any, response: any }) => {
+		const body = await request.body();
+		if (!request.hasBody) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
+
+			console.log(values)
+			await customerService.addDraw({
+				name: values.name,
+				game_id: values.bet_id,
+				end_date: values.end_date
+			});
+
+			response.body = {
+				success: true,
+				message: 'Success',
+			};
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
+
+	/**
+	* @description edit draw
+	*/
+	editDraw: async ({ request, response }: { request: any, response: any }) => {
+		const body = await request.body();
+		if (!request.hasBody) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
+			console.log(values)
+			await customerService.editDraw({
+				name: values.name,
+				game_id: values.game_id,
+				end_date: values.end_date,
+				id: values.id
+			});
+			response.body = {
+				success: true,
+				message: 'Success',
+			};
+
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
+
+
+	getDraw: async (ctx: any) => {
+		try {
+			// console.log(total)
+			let data;
+			data = await customerService.getDraw();
+
+			console.log(data)
+
+			ctx.response.body = {
+				status: true,
+				status_code: 200,
+				data: data,
+			};
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				status: false,
+				message: `${error}`,
+			};
+		}
+	},
+
 };

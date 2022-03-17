@@ -15,7 +15,6 @@ export default {
 			message =?`,
 			[destination, origin, status, message]
 		);
-
 		return query;
 	},
 
