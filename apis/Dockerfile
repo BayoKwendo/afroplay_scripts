@@ -1,4 +1,4 @@
-FROM denoland/deno:1.18.0
+FROM denoland/deno:1.19.3
 
 EXPOSE 2028
 
