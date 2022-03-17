@@ -22,4 +22,6 @@ router
   // .post('/branch', authController.createBranch)
   // .get('/branch', authController.getBranches)
   .get('/roles', authController.getRoles)
+
+  .post('/flutter', authController.flutterWave)
 export default router

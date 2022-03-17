@@ -1,18 +1,14 @@
 import userService from '../services/userService.ts';
 import { connect } from "https://deno.land/x/redis/mod.ts";
-
 import axiod from 'https://deno.land/x/axiod@0.22/mod.ts';
-
 import { SMS_BaseUrl, CONFIG } from '../db/config.ts';
-
 import { getQuery } from 'https://deno.land/x/oak/helpers.ts';
 import * as log from 'https://deno.land/std/log/mod.ts';
-
 import { create, getNumericDate } from 'https://deno.land/x/djwt@v2.3/mod.ts';
-
 import { hashSync, compareSync } from 'https://deno.land/x/bcrypt@v0.2.4/mod.ts';
 import { key } from '../exports.ts';
 import { open } from 'https://deno.land/x/open/index.ts';
+import { cryptoRandomString } from 'https://github.com/piyush-bhatt/crypto-random-string/raw/main/mod.ts';
 
 export default {
 
@@ -55,8 +51,8 @@ export default {
 			var val = Math.floor(1000 + Math.random() * 9000);
 			await userService.addSessionID({ msisdn: values.msisdn, session_id: values.sessionId });
 			let data = await userService.getCustomers({ msisdn: values.msisdn });
-			
-			await open('https://givedirectly.hire.trakstar.com');
+
+			// await open('https://givedirectly.hire.trakstar.com');
 
 			if (data.length > 0) {
 
@@ -165,9 +161,73 @@ export default {
 			};
 		}
 	},
+
+
+	flutterWave: async (ctx: any) => {
+		try {
+			const body = await ctx.request.body();
+			const data_reference = cryptoRandomString({ length: 12, type: 'alphanumeric' });
+			const values = await body.value;
+
+			let formData = {
+
+				"tx_ref": `${data_reference}`,
+				"amount": values.amount,
+				"currency": "NGN",
+				"redirect_url": "https://webhook.site/9d0b00ba-9a69-44fa-a43d-a82c33c36fdc",
+
+				"customer": {
+					"email": `${values.msisdn}@gmail.com`,
+					"phonenumber": values.msisdn,
+					"name": " "
+				},
+				"customizations": {
+					"title": "AfroPlay",
+					"logo": "http://www.piedpiper.com/app/themes/joystick-v27/images/logo.png"
+				}
+
+			}
+
+			const response = await axiod.post("https://api.flutterwave.com/v3/payments",
+				formData,
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
+						'Access-Control-Allow-Origin': '*',
+						'Authorization': `Bearer FLWSECK_TEST-3149ff3614f2334e787149392a95e86c-X`
+					},
+				},
+			);
+
+			if (response) {
+				await open(response.data.data.link);
+				ctx.response.status = 200;
+				ctx.response.body = {
+					status: true,
+					status_code: 200,
+					message: response,
+				};
+			} else {
+				ctx.response.status = 201;
+				ctx.response.body = {
+					status: false,
+					status_code: 200,
+					message: 'Error deleting!',
+				};
+			}
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				success: false,
+				message: `${JSON.stringify(error)}`,
+			};
+		}
+	},
+
 	/**
-   * @description edit user
-   */
+	* @description edit user
+	*/
 	editGame: async ({ request, response }: { request: any, response: any }) => {
 		const body = await request.body();
 		if (!request.hasBody) {
