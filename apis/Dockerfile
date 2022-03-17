@@ -15,4 +15,4 @@ ADD . .
 
 RUN deno cache --unstable server.ts
 
-CMD [ "run", "--unstable", "--allow-net", "--allow-write", "--allow-env", "allow-run", "--watch", "--allow-read", "server.ts" ]
+CMD [ "run", "--unstable", "--allow-net", "--allow-write", "--allow-env", "--allow-run", "--watch", "--allow-read", "server.ts" ]
