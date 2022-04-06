@@ -21,6 +21,7 @@ router
 	.put('/edit_draw', customerController.editDraw)
 	.get('/get_draw', customerController.getDraw)
 	.delete('/delete_draw/:id', customerController.deleteDraw)
+	.get('/customer_deposit', customerController.getCustomerDeposit)
 
 
 

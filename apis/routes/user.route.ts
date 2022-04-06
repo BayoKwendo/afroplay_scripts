@@ -6,6 +6,7 @@ const router = new Router()
 router
   .post('/user', authController.createUser)
   .post('/customers', authController.checkCustomers)
+  
   .get('/user', authController.getUsers)
   .delete('/user/:id', authController.deleteAccount)
   .put('/user', authController.editUser)
@@ -23,5 +24,6 @@ router
   // .get('/branch', authController.getBranches)
   .get('/roles', authController.getRoles)
 
+  .post('/update_transactoion', authController.updateTransaction)
   .post('/flutter', authController.flutterWave)
 export default router

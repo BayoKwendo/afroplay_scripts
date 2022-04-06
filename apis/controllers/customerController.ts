@@ -14,7 +14,7 @@ export default {
 
 			const total = await customerService.getCustomerCount();
 
-			
+
 			console.log("here")
 			if (filter_value == null || filter_value == '') {
 				if (page_number == null) {
@@ -380,4 +380,70 @@ export default {
 		}
 	},
 
+
+
+
+	//get All deposits
+	getCustomerDeposit: async (ctx: any) => {
+		try {
+			// let kw = request.url.searchParams.get('page_number');
+			let { page_number, page_size, msisdn, role_id, filter_value } = getQuery(ctx, { mergeParams: true });
+			// console.log(total)
+
+
+			console.log(role_id);
+
+			const total = await customerService.getDepositCount({
+				msisdn: msisdn
+			});
+
+
+			console.log("here")
+			if (filter_value == null || filter_value == '') {
+				if (page_number == null) {
+					page_number = '1';
+					page_size = '100';
+					const offset = (Number(page_number) - 1) * Number(page_size);
+					const data = await customerService.getTransactions({
+						offset: Number(offset),
+						msisdn: msisdn,
+						page_size: Number(page_size),
+					});
+					ctx.response.body = {
+						status: true,
+						status_code: 200,
+						total: total,
+						data: data,
+					};
+				} else {
+					const offset = (Number(page_number) - 1) * Number(page_size);
+					const data = await customerService.getTransactions({
+						offset: Number(offset),
+						msisdn: msisdn,
+						page_size: Number(page_size),
+					});
+					ctx.response.body = {
+						status: true,
+						status_code: 200,
+						total: total,
+						data: data,
+					};
+				}
+			} else {
+				// console.log(filter_value, '||| params');
+				const data = await customerService.getDepositFilter({ msisdn: msisdn, filter_value: filter_value });
+				ctx.response.body = {
+					status: true,
+					status_code: 200,
+					data: data,
+				};
+			}
+		} catch (error) {
+			ctx.response.status = 400;
+			ctx.response.body = {
+				success: false,
+				message: `${error}`,
+			};
+		}
+	},
 };

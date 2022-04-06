@@ -136,4 +136,52 @@ export default {
 
 
 
+    addTransaction: async ({ msisdn, amount, reference }: General,) => {
+        const result = await client.query(`INSERT INTO
+        deposit_requests
+      SET
+        msisdn = ?,
+        amount = ?,
+        reference = ?`, [
+            msisdn,
+            amount,
+            reference
+        ]);
+        return result;
+    },
+
+
+    updateTransaction: async ({ status, transaction_id, reference }: General,) => {
+        const result = await client.query(`UPDATE deposit_requests
+      SET
+        status = ?,
+        checked=1,
+        transaction_id=? WHERE
+        reference=? AND checked = 0`, [
+            status,
+            transaction_id,
+            reference
+        ]);
+        return result;
+    },
+
+    getTransaction: async ({ transaction_id, reference }: General,) => {
+        const [result] = await client.query(`SELECT amount, msisdn FROM deposit_requests
+        WHERE transaction_id=? AND reference=?`, [
+            transaction_id,
+            reference
+        ]);
+        return result;
+    },
+
+    updateCustomerBalance: async ({ msisdn, amount }: General,) => {
+        const result = await client.query(`UPDATE ${TABLE.CUSTOMERS}
+            SET balance = balance + ${amount} WHERE msisdn=?`, [
+            msisdn
+        ]);
+        return result;
+    },
+
+
+
 };

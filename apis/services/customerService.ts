@@ -133,4 +133,31 @@ export default {
 	// 	]);
 	// 	return result;
 	// },
+
+
+
+
+
+	//get deposits
+	getTransactions: async ({ msisdn, offset, page_size }: General) => {
+		return await client.query(`SELECT *  
+        FROM deposit_requests
+		WHERE id  AND msisdn = ${msisdn} ORDER BY id DESC LIMIT ${offset},${page_size}`);
+	},
+
+	//get deposit count
+	getDepositCount: async ({ msisdn }: General) => {
+		const [result] = await client.query(`SELECT COUNT(id) count FROM deposit_requests WHERE msisdn = ${msisdn}`);
+		return result.count;
+	},
+
+	//filter deposit filter value details
+	getDepositFilter: async ({msisdn, filter_value }: General) => {
+		return await client.query(`SELECT * FROM deposit_requests
+		WHERE 
+		msisdn = ${msisdn}
+		status LIKE "%${filter_value}%" OR
+        reference LIKE "%${filter_value}%" OR
+        transaction_id LIKE "%${filter_value}%"`);
+	},
 };

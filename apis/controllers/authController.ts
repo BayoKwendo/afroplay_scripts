@@ -52,7 +52,6 @@ export default {
 			await userService.addSessionID({ msisdn: values.msisdn, session_id: values.sessionId });
 			let data = await userService.getCustomers({ msisdn: values.msisdn });
 
-			// await open('https://givedirectly.hire.trakstar.com');
 
 			if (data.length > 0) {
 
@@ -162,6 +161,66 @@ export default {
 		}
 	},
 
+	// {
+	// 	--   "card_issuer": "MASTERCARD",
+	// 	--   "auth_type": "PIN",
+	// 	--   "card_number": "5531886652142950",
+	// 	--   "cvv": "564",
+	// 	--   "expiry_date": "09/32",
+	// 	--   "pin": "3310",
+	// 	--   "otp": "12345"
+	// 	-- }
+
+
+	/**
+* @description update transaction
+*/
+	updateTransaction: async ({ request, response }: { request: any, response: any }) => {
+		const body = await request.body();
+		if (!request.hasBody) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: 'No data provided',
+			};
+			return;
+		}
+		try {
+			const values = await body.value;
+
+			await userService.updateTransaction({
+				status: values.status,
+				transaction_id: values.transaction_id,
+				reference: values.reference
+			})
+
+			if (values.status == "successful") {
+
+				let data = await userService.getTransaction(
+					{
+						reference: values.reference, 
+						transaction_id: values.transaction_id
+					}
+				);
+				await userService.updateCustomerBalance({
+					msisdn: data.msisdn,
+					amount: data.amount
+				})
+			}
+
+			response.body = {
+				success: true,
+				message: 'Success',
+			};
+
+		} catch (error) {
+			response.status = 400;
+			response.body = {
+				success: false,
+				message: `Error: ${error}`,
+			};
+		}
+	},
 
 	flutterWave: async (ctx: any) => {
 		try {
@@ -169,51 +228,68 @@ export default {
 			const data_reference = cryptoRandomString({ length: 12, type: 'alphanumeric' });
 			const values = await body.value;
 
-			let formData = {
+			console.log(values)
+			let data = await userService.getCustomers({ msisdn: values.msisdn });
 
-				"tx_ref": `${data_reference}`,
-				"amount": values.amount,
-				"currency": "NGN",
-				"redirect_url": "https://webhook.site/9d0b00ba-9a69-44fa-a43d-a82c33c36fdc",
 
-				"customer": {
-					"email": `${values.msisdn}@gmail.com`,
-					"phonenumber": values.msisdn,
-					"name": " "
-				},
-				"customizations": {
-					"title": "AfroPlay",
-					"logo": "http://www.piedpiper.com/app/themes/joystick-v27/images/logo.png"
+			if (data.length > 0) {
+
+				await userService.addTransaction({
+					msisdn: values.msisdn,
+					amount: values.amount,
+					reference: data_reference
+				})
+
+				let formData = {
+					"tx_ref": `${data_reference}`,
+					"amount": values.amount,
+					"currency": "NGN",
+					"redirect_url": "http://localhost:3000/flutter",
+					"customer": {
+						"email": `${values.msisdn}@gmail.com`,
+						"phonenumber": values.msisdn,
+						"name": " "
+					},
+					"customizations": {
+						"title": "AfroPlay",
+						"logo": "http://www.piedpiper.com/app/themes/joystick-v27/images/logo.png"
+					}
+
 				}
 
-			}
-
-			const response = await axiod.post("https://api.flutterwave.com/v3/payments",
-				formData,
-				{
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'application/json',
-						'Access-Control-Allow-Origin': '*',
-						'Authorization': `Bearer FLWSECK_TEST-3149ff3614f2334e787149392a95e86c-X`
+				const response = await axiod.post("https://api.flutterwave.com/v3/payments",
+					formData,
+					{
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+							'Access-Control-Allow-Origin': '*',
+							'Authorization': `Bearer FLWSECK_TEST-3149ff3614f2334e787149392a95e86c-X`
+						},
 					},
-				},
-			);
+				);
 
-			if (response) {
-				await open(response.data.data.link);
-				ctx.response.status = 200;
-				ctx.response.body = {
-					status: true,
-					status_code: 200,
-					message: response,
-				};
+				if (response) {
+					ctx.response.status = 200;
+					ctx.response.body = {
+						status: true,
+						status_code: 200,
+						message: response,
+					};
+				} else {
+					ctx.response.status = 201;
+					ctx.response.body = {
+						status: false,
+						status_code: 200,
+						message: 'Error deleting!',
+					};
+				}
 			} else {
 				ctx.response.status = 201;
 				ctx.response.body = {
 					status: false,
 					status_code: 200,
-					message: 'Error deleting!',
+					message: 'Phone number not found! Try Again',
 				};
 			}
 		} catch (error) {
